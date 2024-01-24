@@ -13,6 +13,7 @@ function App() {
   let [따봉2,따봉변경2] = useState(0);
   let [modal,setModal] = useState(false);
   let[누른제목,방금누른제목] = useState(0);
+  let[입력값,입력값변경] = useState('');
 
 
   
@@ -50,12 +51,30 @@ function App() {
         글제목.map(function(a,i){
           return (
             <div className='list' key={i}>
-              <h4 onClick={()=>{setModal(true); 방금누른제목(i)}}>{a} <span onClick={()=>{따봉변경(따봉+1)}}>❤</span> {따봉}</h4>
+              <h4 onClick={()=>{setModal(true); 방금누른제목(i)}}>{a} <span onClick={(e)=>{ e.stopPropagation(); 따봉변경(따봉+1)}}>❤</span> {따봉}</h4>
               <p>2월 17일 발행</p>
+              <button onClick={()=>{
+                let copy = [...글제목];
+                copy.splice(i,1);
+                글제목변경(copy);
+              }}>삭제</button>
             </div>
+            
           )
         })
       }
+
+
+      
+      <input onChange={(e)=>{
+        입력값변경(e.target.value);
+      }}/> 
+      <button onClick={()=>{
+        let copy=[...글제목];
+        copy.unshift(입력값);
+        글제목변경(copy)
+      }}>글발행</button>
+      
 
       {
         modal == true ? <Modal color={'skyblue'} 글제목={글제목} 누른제목={누른제목}/> : null
