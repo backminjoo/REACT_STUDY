@@ -54,9 +54,9 @@ function App() {
                 </>
         }/>
 
-        <Route path="/detail" element={<Detail/>}/>
+        <Route path="/detail/:id" element={<Detail shoes={shoes} />}/>
 
-        <Route path="*" element={<div>없는페이지입니다.</div>}/>
+        {/* <Route path="*" element={<div>없는페이지입니다.</div>}/> */}
 
         <Route path="/about" element={<About/>}>
           <Route path="member" element={<div>멤버임</div>} />
@@ -67,7 +67,6 @@ function App() {
     </div>
   );
 }
-
 function About(){
   return (
     <div>
