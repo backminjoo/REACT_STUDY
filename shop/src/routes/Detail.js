@@ -11,13 +11,23 @@ function Detail(props) {
 
 
     let[count, setCount] = useState(0)
+
+    //유저가 :id 자리에 적은거 가져와줌
     let {id} = useParams();
+    // console.log(id)
+
     let 찾은상품 = props.shoes.find(x=>x.id == id);
     let [alert,setAlert]=useState(true)
     let [탭, 탭변경] = useState(0)
     let dispatch = useDispatch()
 
-
+    useEffect(()=>{
+        let 꺼낸거 = localStorage.getItem('watched') //watched항목 꺼내서 변수에 저장
+        꺼낸거 = JSON.parse(꺼낸거)//json 자료니까 array,object 로 변경
+        꺼낸거.push(찾은상품.id)
+        localStorage.setItem('watched', JSON.stringify(꺼낸거))
+        console.log('LocalStorage에서 가져온 값:', JSON.parse(꺼낸거));
+    },[])
 
     useEffect(()=>{
         let a = setTimeout(()=>{setAlert(false)},2000)
@@ -51,6 +61,7 @@ function Detail(props) {
                     <button className='btn btn-danger' onClick={()=>{
 
                         dispatch(addItem({id : 1, name : 'Red Knit', count :1}))
+                        
                     }}>주문하기</button>
                 </div>
             </div>
