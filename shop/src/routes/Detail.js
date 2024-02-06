@@ -25,9 +25,10 @@ function Detail(props) {
         let 꺼낸거 = localStorage.getItem('watched') //watched항목 꺼내서 변수에 저장
         꺼낸거 = JSON.parse(꺼낸거)//json 자료니까 array,object 로 변경
         꺼낸거.push(찾은상품.id)
+        꺼낸거 = new Set(꺼낸거)
+        꺼낸거 = Array.from(꺼낸거)
         localStorage.setItem('watched', JSON.stringify(꺼낸거))
-        console.log('LocalStorage에서 가져온 값:', JSON.parse(꺼낸거));
-    },[])
+    }, []);
 
     useEffect(()=>{
         let a = setTimeout(()=>{setAlert(false)},2000)

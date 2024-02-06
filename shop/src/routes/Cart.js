@@ -2,15 +2,30 @@ import { Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeName } from './../store.js'
 import { addCount } from './../store.js'
-function Cart(){
+import { memo, useMemo,useState } from 'react'
 
+// 꼭 필요할 때만 재렌더링하려면 memo
+// let Child = memo(function(){
+//     console.log('재렌더링됨')
+//     return <div>자식임</div>
+// })
+
+
+
+
+function Cart(){
     let state = useSelector((state)=>state) 
     let dispatch = useDispatch()
+    // let [count,setCount] = useState(0)
+
 
 
 
     return (
         <div>
+            {/* <Child></Child>
+            <button onClick={()=>{setCount(count+1)}}>+</button> */}
+
             {state.user}의 장바구니
             <Table>
                 <thead>

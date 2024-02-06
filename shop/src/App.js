@@ -1,12 +1,21 @@
 import logo from './logo.svg';
 import {Button, Navbar, Container, Nav} from 'react-bootstrap';
 import './App.css';
-import { createContext, useEffect, useState } from 'react';
+import { lazy, Suspense, createContext, useEffect, useState } from 'react';
 import data from './data.js';
 import{Routes,Route,Link, useNavigate, Outlet} from 'react-router-dom'
-import Detail from './routes/Detail.js';
 import axios from 'axios';
-import Cart from './routes/Cart.js'
+import { useQuery } from 'react-query';
+
+
+// import Detail from './routes/Detail.js';
+// import Cart from './routes/Cart.js'
+
+//lazy - 컴포넌트가 필요해질 때 import 해주세요
+const Detail = lazy(() => import('./routes/Detail.js'));
+const Cart = lazy(() => import('./routes/Cart.js'));
+
+
 
 export let Context1 = createContext()
 
@@ -17,13 +26,22 @@ function App() {
   },[])
 
 
+
+
   
 
   let [shoes,setShoes] = useState(data);
   let [재고] = useState([10,11,12])
   let navigate = useNavigate();
 
+  //react-query 이용해서 ajax 요청
+  let result = useQuery('작명',()=>{
+    return axios.get('https://codingapple1.github.io/userdata.json').then((a)=>{
+    console.log('요청됨')
+    return a.data
+    })
 
+  })
 
   return (  <div className="App"> 
 
@@ -35,12 +53,20 @@ function App() {
             <Nav.Link onClick={()=>{navigate('/cart')}}>Cart</Nav.Link>
 
           </Nav>
+          <Nav className='ms-auto' style={{color:'white'}}>
+            { result.isLoading && '로딩중' }
+            { result.error && '에러남'}
+            { result.data && result.data.name }
+          </Nav>
+
+
+
         </Container>
       </Navbar>
       
 
 
-
+      <Suspense fallback={<div>로딩중임</div>}>
       <Routes>
         <Route path="/" element={
           <>
@@ -85,6 +111,8 @@ function App() {
         </Route>
         <Route path='/cart' element={<Cart/>} />
       </Routes>
+      </Suspense>
+      
     </div>
   );
 }
